@@ -1,32 +1,30 @@
-#include <cstdio>
 #include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+#define FOR(i, n) for (int i = 0; i < n; i++)
 
-
-const int MAX_N = 100;
-const int MAX_W = 100;
-
-
-int dp[MAX_N + 1][MAX_W + 1];
-
-int N, W;
-int w[MAX_N], v[MAX_N];
+int n, W;
+vector<pair<int, int>> wv;
+vector<vector<int>> dp;
 
 void solve() {
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j <= W; j++) {
-            for (int k = 0; k*w[i] <= j; k++) {
-                dp[i + 1][j] = std::max(dp[i + 1][j], dp[i][j - k*w[i]] + k*v[i]);
-            }
-        }
+    for (int i = 0; i < n; i++) {
+        for (int rest_w = 0; rest_w <= W; rest_w++) {
+            if (rest_w < wv[i].first) dp[i + 1][rest_w] = dp[i][rest_w];
+            else dp[i+1][rest_w] = max(dp[i][rest_w], dp[i][rest_w - wv[i].first] + wv[i].second);
+        } 
     }
-    printf("%d\n", dp[N][W]);
+    cout << dp[n][W] << endl;
 }
 
-int main(){
-    scanf("%d\n", &N);
-    scanf("%d\n", &W);
-    for (int i = 0; i < N; i++) {
-        scanf("%d,%d\n", &w[i], &v[i]);
-    }
+
+int main() {
+    cin >> n >> W;
+    wv.assign(n, pair<int, int>());
+    dp.assign(n+1, vector<int>(W+1));
+    for (auto& i : wv) cin >> i.first >> i.second;
     solve();
+    return 0;
+
 }

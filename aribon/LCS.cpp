@@ -1,35 +1,23 @@
-#include <algorithm>
-#include <cstdio>
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+#define FOR(i, n) for (int i = 0; i < n; i++)
 
-const int MAX_N = 100;
-
-int n, m;
-char s[MAX_N], t[MAX_N];
-
-int dp[MAX_N + 1][MAX_N + 1];
-
-void solve() {
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < m; j++) {
-            if (s[i] == t[j]) {
-                dp[i + 1][j + 1] = dp[i][j] + 1;
-            } else {
-                dp[i + 1][j + 1] = std::max(dp[i][j + 1], dp[i + 1][j]);
-            }
-        }
-    }
-    printf("%d\n", dp[n][m]);
-}
 
 int main() {
-    scanf("%d\n", &n);
-    scanf("%d\n", &m);
-    for (int i = 0; i < n; i++) {
-        scanf("%c\n", &s[i]);
+    int n, m; cin >> n >> m;
+    string s = "abcd";
+    string t = "becd";
+
+    int dp[n+1][m+1];
+    FOR(i, n){
+        FOR (j, m) {
+            if (s[i] == t[j]) dp[i+1][j+1] = dp[i][j] + 1;
+            else dp[i+1][j+1] = max(dp[i+1][j], dp[i][j+1]);
+        }
     }
-    for (int j = 0; j < m; j++) {
-        scanf("%c\n", &t[j]);
-    }
-    solve();
+    cout << dp[n][m] << endl;
     return 0;
+
 }
