@@ -9,6 +9,21 @@ const int MOD = 1000000007;
 
 ll fac[MAX], finv[MAX], inv[MAX];
 
+ll modpow(ll a, ll n, int mod) {
+    ll res = 1;
+    while (n > 0) {
+        if (n & 1) {
+            res *= a;
+            res %= MOD;
+        }
+        a *= a;
+        a %= MOD;
+
+        n >>= 1;
+    }
+    return res;
+}
+
 void COMinit() {
     fac[0] = fac[1] = 1;
     finv[0] = finv[1] = 1;
@@ -30,37 +45,36 @@ ll HCOM(int n, int k) {
     return (n == 0 && k == 0) ? 1 : COM(n+k-1, k);
 }
 
-ll modpow(ll a, ll n, int mod) {
-    ll res = 1;
-    while (n > 0) {
-        if (n & 1) {
-            res *= a;
-            res %= MOD;
-        }
-        a *= a;
-        a %= MOD;
-
-        n >>= 1;
-    }
-    return res;
-}
-
-ll nCr(int n, int r) {
-    ll a = 1;
-    ll b = 1;
-    
-    for (int i = 0; i < r; ++i) {
-        a *= (n - i);
-        b *= (i + 1);
-        a %= MOD;
-        b %= MOD;
-    }
-    return (a * modpow(b, MOD - 2, MOD))%MOD;
-}
 
 int main() {
+    ll n, k;
+    cin >> n >> k;
+
     COMinit();
-    cout << COM(100000, 50000) << endl;
+
+    ll x = 0;
+
+    if (n < k) {
+        x = n;
+    } else {
+        x = k;
+    }
+
+    ll ans = 0;
+    
+    for (ll i = 0; i <= x; ++i) {
+        ll res = 0;
+        res += COM(n, i);
+        res %= MOD;
+
+        res *= HCOM(n - i, i);
+        res %= MOD;
+
+        ans += res;
+        ans %= MOD;
+    }
+
+    cout << ans << endl;
 
     return 0;
 }
