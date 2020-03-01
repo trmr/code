@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <cstdio>
+#include <iostream>
 
 const int MAX_N = 1000;
 const int INF = 100000000;
