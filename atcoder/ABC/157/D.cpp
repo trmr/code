@@ -1,71 +1,67 @@
 #include <iostream>
 #include <vector>
+#include <set>
 
 using namespace std;
 
+struct UnionFind {
+    vector<int> par;
 
-const int MAX_N = 100;
+    UnionFind(int n) : par(n, -1) {}
 
-vector<int> par(MAX_N);
-vector<int> rank(MAX_N);
-
-void init(int n) {
-    for (int i = 0; i < n; ++i) {
-        par[i] = i;
-        rank[i] = 0;
+    int root(int x) {
+        if (par[x] < 0) return x;
+        else return par[x] = root(par[x]);
     }
-}
 
-int find(int x) {
-    if (par[x] == x) {
-        return x;
-    } else {
-        return par[x] = find(par[x]);
+    bool isSame(int x, int y) {
+        return root(x) == root(y);
     }
-}
 
-void unite(int x, int y) {
-    x = find(x);
-    y = find(y);
-
-    if (x == y) return;
-
-    if (rank[x] < rank[y]) {
-        par[x] = y;
-    } else {
+    bool unite(int x, int y){
+        x = root(x);
+        y = root(y);
+        if (x == y) return false;
+        if (par[x] > par[y]) swap(x, y);
+        par[x] += par[y];
         par[y] = x;
-        if (rank[x] == rank[y]) rank[x]++;
+        return true;
     }
-}
 
-bool same(int x, int y) {
-    return find(x) == find(y);
-}
+    int size(int x) {
+        return -par[root(x)];
+    }
+};
+
+using P = pair<int, int>;
 
 int main() {
     int N, M, K; cin >> N >> M >> K;
-    vector<pair<int, int>> F(M);
-    vector<pair<int, int>> B(K);
+    vector<set<int>> F(N);
+    vector<set<int>> B(N);
+    UnionFind uf(N);
 
-    vector<bool> used(N);
-
-    for (auto f:F) cin >> f.first >> f.second;
-    for (auto b:B) cin >> b.first >> b.second;
-
-    init(N);
+    for (int i = 0; i < M; i++) {
+        int a, b; cin >> a >> b; a--, b--;
+        F[a].insert(b);
+        F[b].insert(a);
+        uf.unite(a, b);
+    }
+    for (int i = 0; i < K; i++) {
+        int c, d; cin >> c >> d; c--, d--;
+        if (!uf.isSame(c, d)) continue;
+        B[c].insert(d);
+        B[d].insert(c);
+    }
 
     for (int i = 0; i < N; i++) {
-        int n = N[i];
-        int m = 0;
-
-        for (int j = i + 1; j < N; j++) {
-            if (!used[j]) m = N[j];
-        }
-
-        unite(n, m);
-
-
-
+        int mem = uf.size(i) - 1;
+        mem -= F[i].size();
+        mem -= B[i].size();
+        cout << mem << " ";
     }
+    cout << endl;
+
+    return 0;
 
 }
