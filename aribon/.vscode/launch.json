@@ -14,7 +14,7 @@
           null,
           null
         ],
-        "preLaunchTask": "Build with Clang",
+        "preLaunchTask": "Build with GCC",
         "relativePathBase": "${workspaceFolder}"
       }
     ]
