@@ -2,14 +2,13 @@
     "version": "2.0.0",
     "tasks": [
       {
-        "label": "Build with Clang",
+        "label": "Build with GCC",
         "type": "shell",
-        "command": "clang++",
+        "command": "g++",
         "args": [
           "-g",
           "-O0",
           "-std=c++14",
-          "-stdlib=libc++",
           "${file}"
         ],
         "group": {

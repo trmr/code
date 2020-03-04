@@ -1,6 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
@@ -9,23 +7,21 @@ using ll = long long;
 int main() {
     ll a, b; cin >> a >> b;
 
-    vector<ll> prime(b);
-    vector<bool> is_prime(b, true);
+    int L = b - a;
+    vector<bool> is_prime(L, true);
+    ll sq_b = sqrt(b);
+    vector<bool> is_prime_sq(sq_b, true);
+    ll ans = 0;
 
-    int p = 0;
-    int ans = 0;
-
-    is_prime[0] = is_prime[1] = false;
-
-    for (ll i = 2; i <= b; i++) {
-        if (is_prime[i]) {
-            if (a <= i) {
-                prime[p++] = i;
-                ans++;
+    for (ll i = 2; i <= sq_b; i++) {
+        if (is_prime_sq[i]) {
+            for (ll j = 2 * i; j < sq_b; j += i) is_prime_sq[j] = false;
+            for (ll j = max(2LL, (a + i - 1) / i) * i; j < b; j += i) {
+                is_prime[j - a] = false;
             }
-            for (ll j = 2 * i; j <= b; j += i) is_prime[j] = false;
         }
     }
+    for (auto x:is_prime) if (x) ans++;
 
     cout << ans << endl;
 
