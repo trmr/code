@@ -1,44 +1,42 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+using ll = long long;
 
-int main() {
-    int n; cin >> n;
-    vector<vector<int>> M(n, vector<int>(n));
-    vector<int> pos_1(n);
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> M[i][j];
-            if (M[i][j] == 1) pos_1[i] = j;
+#define REP(i, n) for (int i = 0; i < (n); i++)
+
+const int MAX_N = 40;
+
+int N;
+int M[MAX_N][MAX_N];
+
+int a[MAX_N];
+
+void solve() {
+    int res = 0;
+    for (int i = 0; i < N; i++) {
+        a[i] = -1;
+        for (int j = 0; j < N; j++) {
+            if (M[i][j] == i) a[i] = j;
         }
     }
 
-    int src_row = 0;
-    int dst_row = 0;
-    int cnt = 0;
-
-    int target_pos = 0;
-
-    for (src_row = 0; src_row < n; src_row++) {
-
-        for (int i = src_row; i < n; i++) {
-            if (pos_1[i] <= target_pos) {
-                dst_row = i;
+    for (int i = 0; i < N; i++) {
+        int pos = -1;
+        for (int j = i; j < N: j++) {
+            if (a[j] <= i) {
+                pos = j;
                 break;
             }
         }
 
-        if (dst_row > src_row) {
-            for (int j = dst_row; j > src_row; j--) {
-                swap(pos_1[dst_row], pos_1[dst_row--]);
-                cnt++;
-            }
-            target_pos++;
-        }
+        
     }
+}
 
-    cout << cnt << endl;
-
+int main() {
+    cin.tie(0);
+    ios_base::sync_with_stdio(false);
+    
     return 0;
-
 }
