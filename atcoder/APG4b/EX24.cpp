@@ -3,6 +3,49 @@ using namespace std;
 
 // 以下に、24時間表記の時計構造体 Clock を定義する
 
+struct Clock {
+  int hour, minute, second;
+
+  void set(int h, int m, int t) {
+    hour = h;
+    minute = m;
+    second = t;
+  }
+
+string to_str() {
+    string ret;
+ 
+    if (!(0 <= hour && hour <= 23 &&
+          0 <= minute && minute <= 59 &&
+          0 <= second && second <= 59)) {
+      return "error";
+    }
+ 
+    if (hour < 10) ret += "0";
+    ret += to_string(hour);
+ 
+    ret += ":";
+ 
+    if (minute < 10) ret += "0";
+    ret += to_string(minute);
+ 
+    ret += ":";
+ 
+    if (second < 10) ret += "0";
+    ret += to_string(second);
+ 
+    return ret;
+  }
+
+  void shift(int diff_second) {
+    int now_second = hour * 3600 + minute * 60 + second;
+    int shift_second = (now_second + diff_second + 86400) % 86400;
+    hour = shift_second / 3600;
+    minute = (shift_second % 3600) / 60;
+    second = shift_second % 60;  
+  }
+};
+
 // Clock構造体のメンバ変数を書く
 //   int hour    時間を表す (0~23の値をとる)
 //   int minute  分を表す   (0~59の値をとる)
