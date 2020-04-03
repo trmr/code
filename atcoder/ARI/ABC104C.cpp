@@ -4,36 +4,59 @@ using namespace std;
 using ll = long long;
 
 #define REP(i, n) for (int i = 0; i < (n); i++)
-int d, g;
-vector<int> p(10);
-vector<int> c(10);
-int minround = 10000000;
 
-int rec(int x, int round) {
-    if (x >= g) return round;
-
-    for (int i = 0; i < d; i++) {
-        if (p.at(i) == 0) continue;
-        else if (p.at(i) == 1) x += c.at(i);
-        p.at(i)--;
-        minround = min(minround, rec(x + 100 * (i+1), round + 1));
-        p.at(i)++;
-    }
-
-    return 10000000;
-}
 
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(false);
 
-    cin >> d >> g;
+    int d, g; cin >> d >> g;
+    vector<int> p(d);
+    vector<int> c(d);
     REP(i, d) {
         cin >> p.at(i) >> c.at(i);
     }
 
-    rec(0, 0);
-    cout << minround << endl;
+    int min_solved = 1000000000;
+
+    for (int i = 0; i < 1 << d; i++) {
+        bitset<10> bit(i);
+
+        int current_g = 0;
+        int solved = 0;
+
+        for (int x = 0; x < d; x++) {
+            if (bit.test(x)) {
+                current_g += (100 * (x + 1) * p.at(x) + c.at(x));
+                solved += p.at(x); 
+            }
+        }
+
+        if (current_g >= g) {
+            min_solved = min(min_solved, solved);
+            continue;
+        }
+
+        bool flag = false;
+
+        for (int x = d - 1; x >= 0; x--) {
+            if (!bit.test(x)) {
+                for (int y = 0; y < p.at(x); y++) {
+                    current_g += 100 * (x + 1);
+                    solved++;
+
+                    if (current_g >= g) {
+                        min_solved = min(min_solved, solved);
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            if (flag) break;
+        }
+    }
+
+    cout << min_solved << endl;
     
     return 0;
 }
