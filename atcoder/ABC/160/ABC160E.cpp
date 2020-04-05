@@ -18,50 +18,30 @@ int main() {
     REP(i, b) cin >> q.at(i);
     REP(i, c) cin >> r.at(i);
 
-    vector<pair<int, string>> v(a + b + c);
 
-    REP(i, a) {
-        v.push_back(make_pair(p.at(i), "red"));
+    sort(p.begin(), p.end(), greater<int>());
+    sort(q.begin(), q.end(), greater<int>());
+    sort(r.begin(), r.end(), greater<int>());
+
+
+    priority_queue<int> que;
+
+
+    REP(i, x) {
+        que.push(p.at(i));
     }
-    REP(i, b) {
-        v.push_back(make_pair(q.at(i), "green"));
+    REP(i, y) {
+        que.push(q.at(i));
     }
     REP(i, c) {
-        v.push_back(make_pair(r.at(i), "none"));
+        que.push(r.at(i));
     }
-
-    sort(v.begin(), v.end());
 
     int ans = 0;
 
-    for (int i = 0; i < a + b + c; i++) {
-        string color = v.at(i).second;
-        int point = v.at(i).first;
-
-        if (color == "red") {
-            if ((a + c == x) || (b + c == y && a == x) || (a + b + c == x + y)) {
-                x--;
-                ans += point;
-            }
-            a--;
-            
-        } else if (color == "green") {
-            if ((b + c == y) || (a + c == x && b == y) || (a + b + c == x + y)) {
-                y--;
-                ans += point;
-            } 
-            b--;
-        } else if (color == "none") {
-            if ((a + c == x) || (b + c == x) || (a + b + c == x + y)) {
-                if (a < x) {
-                    x--;
-                } else if (y) {
-                    y--;
-                }
-                ans += point;
-            }
-            c--;
-        }
+    REP(i, x+y) {
+        ans += que.top();
+        que.pop();
     }
 
     cout << ans << endl;

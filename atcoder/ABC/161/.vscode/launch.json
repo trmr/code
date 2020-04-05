@@ -8,7 +8,7 @@
         "program": "${workspaceFolder}/a.out",
         "args": [
           "<",
-          "input.txt"
+          "input"
         ],
         "cwd": "${workspaceFolder}",
         "environment": [],
