@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+using ll = long long;
 
-bool is_prime(int n) {
+bool isPrime(int n) {
     for (int i = 2; i * i <= n; i++) {
         if (n % i == 0) return false;
     }
@@ -50,12 +51,20 @@ int sieve(int n) {
     return p;
 }
 
-ll gcd(ll a, ll b) {
-    if (a < b) return gcd(b, a);
-    ll r;
-    while ((r=a%b)) {
-        a = b;
-        b = r;
+ll GCD(ll a, ll b) {
+    if (b == 0) return a;
+    else return GCD(b, a % b);
+}
+
+ll extGCD(ll a, ll b, ll &x, ll &y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
     }
-    return b;
+    ll d = extGCD(b, a%b, y, x);
+
+    y -= a/b * x;
+
+    return d;
 }

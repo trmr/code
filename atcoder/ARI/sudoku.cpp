@@ -38,7 +38,7 @@ void rec(Field &field, vector<Field> &res) {
         }
     }
 
-    for (int x = 0; x < 9; x++) {
+    for (int x = 1; x <= 9; x++) {
         if (!canuse.at(x)) continue;
         field.at(emptyi).at(emptyj) = x;
         rec(field, res);
@@ -51,6 +51,28 @@ void rec(Field &field, vector<Field> &res) {
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(false);
-    
+
+    vector<vector<int>> field(9, vector<int>(9, -1));
+    for (int i = 0; i < 9; i++) {
+        string line; cin >> line;
+        for (int j = 0; j < 9; j++) {
+            if (line.at(j) == '*') continue;
+        
+        int num = line.at(j) - '0';
+        field.at(i).at(j) = num;
+        }
+    }    
+
+    vector<Field> res;
+    rec(field, res);
+
+    Field ans = res.at(0);
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            cout << ans.at(i).at(j) << " ";
+        }
+        cout << endl;
+    }
+
     return 0;
 }
