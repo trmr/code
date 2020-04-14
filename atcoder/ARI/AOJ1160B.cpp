@@ -37,7 +37,7 @@ int main() {
     REP(i, h) {
         REP(j, w) {
             int x; cin >> x;
-            c.at(i).at(j) = x;
+            c.at(i).at(j) = line.at(j);
         }
     }
 

@@ -20,8 +20,8 @@ int main() {
 
 
     int R, C; cin >> R >> C;
-    int sx, sy; cin >> sx >> sy;
-    int gx, gy; cin >> gx >> gy;
+    int sx, sy; cin >> sy >> sx;
+    int gx, gy; cin >> gy >> gx;
     sx--; sy--; gx--; gy--;
 
     Field c(R, vector<int>(C));
@@ -38,13 +38,13 @@ int main() {
     Field dp(R, vector<int>(C, INT32_MAX));
 
     
-    que.push(make_pair(sx, sy));
-    dp.at(sx).at(sy) = 0;
+    que.push(make_pair(sy, sx));
+    dp.at(sy).at(sx) = 0;
 
     while (!que.empty()) {
         pair<int, int> p = que.front();
-        int x = p.first;
-        int y = p.second;
+        int x = p.second;
+        int y = p.first;
         que.pop();
 
         if (x == gx && y == gy) {
@@ -54,16 +54,16 @@ int main() {
         REP(i, 4) {
             int nx = x + dx.at(i); int ny = y + dy.at(i);
             if (nx < 0 || C <= nx || ny < 0 || R <= ny) continue;
-            if (c.at(nx).at(ny) == '#') continue;
-            if (dp.at(nx).at(ny) == INT32_MAX) {
-                que.push(make_pair(nx, ny));
-                dp.at(nx).at(ny) = dp.at(x).at(y) + 1;
+            if (c.at(ny).at(nx) == '#') continue;
+            if (dp.at(ny).at(nx) == INT32_MAX) {
+                que.push(make_pair(ny, nx));
+                dp.at(ny).at(nx) = dp.at(y).at(x) + 1;
             }
 
         }
     }
 
-    cout << dp.at(gx).at(gy) << endl;
+    cout << dp.at(gy).at(gx) << endl;
     
     return 0;
 }
