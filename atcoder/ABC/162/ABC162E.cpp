@@ -29,8 +29,8 @@ ll modpow(ll a, ll n, int mod) {
     return res;
 }
 
-vector<int> divisor(int n) {
-    vector<int> res;
+vector<long> divisor(int n) {
+    vector<long> res;
     for (int i = 1; i * i <= n; i++) {
         if (n % i == 0) {
             res.push_back(i);
@@ -44,6 +44,21 @@ vector<int> divisor(int n) {
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(false);
+
+    int n, k; cin >> n >> k;
+
+    vector<ll> X(100100, 0);
+
+    int ans = 0;
+
+    for (int i = k; i > 0; i--) {
+        ll num = ((modpow(k/i, n, mod) - X.at(i)) % mod + mod) % mod;
+        ans = (ans + num * i + mod) % mod;
+        vector<long> d = divisor(i);
+        for (auto &it:d) X.at(it) = (X.at(it) + num + mod) % mod;
+    }
     
+    cout << ans << endl;
+
     return 0;
 }
