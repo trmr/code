@@ -23,6 +23,7 @@ int N, M;
 
 Graph G;
 vector<int> dp(100100, -1);
+vector<int> deg;
 
 int rec(int v) {
     if (dp.at(v) != -1) return dp.at(v);
@@ -41,16 +42,32 @@ int main() {
 
     cin >> N >> M;
     G.assign(N, vector<int>());
+    deg.assign(N, 0);
     REP(i, M) {
         int x, y;
         cin >> x >> y;
         x--; y--;
         G.at(x).push_back(y);
+        deg.at(y)++;
+    }
+
+    queue<int> que;
+    for (int v = 0; v < N; v++) if (deg.at(v) == 0) que.push(v);
+
+    while (!que.empty()) {
+        int v = que.front(); que.pop();
+        for (auto nv : G.at(v)) {
+            deg.at(nv)--;
+            if (deg.at(nv) == 0) {
+                que.push(nv);
+                chmax(dp.at(nv), dp.at(v) + 1);
+            }
+        }
     }
 
     int ans = 0;
     for (int v = 0; v < N; v++) {
-        chmax(ans, rec(v));
+        chmax(ans, dp.at(v));
     }
 
     cout << ans << endl;
