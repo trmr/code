@@ -19,7 +19,7 @@ template<class T> inline bool chmax(T &a, T b) { if (a < b) { a = b; return true
 template<class T> inline bool chmin(T &a, T b) { if (a > b) { a = b; return true; } return false; }
 
 string S;
-vector<int> dp(200100, 0);
+vector<int> cnt(2020, 0);
 
 int main() {
     cin.tie(0);
@@ -28,21 +28,24 @@ int main() {
     cin >> S;
 
     ll N = S.size();
+    reverse(ALL(S));
+
+    ll total = 0;
+    int ten = 1;
+
+    cnt.at(0) = 1;
 
     REP(i, N) {
-        for (int j = 1; i + j <= N; j++) {
+        total = (total + (S.at(i) - '0') * ten) % 2019;
+        cnt.at(total)++;
 
-            string sub = S.substr(i, j);
-            ll ls = stoll(sub) % 2019;
-            if (ls == 0) {
-                dp.at(i)++;
-            }
-        }
+        ten = (ten * 10) % 2019;    
     }
 
     ll ans = 0;
-    REP(i, N) {
-        ans += dp.at(i);
+
+    REP(i, 2020) {
+        ans += cnt.at(i) * (cnt.at(i) - 1) / 2;
     }
 
     cout << ans << endl;
