@@ -26,8 +26,20 @@ int main() {
 
     cin >> N >> M;
 
-    for (int i = 1; i <= M; i++) {
-        cout << i << " " << N - i + 1 << endl;
+    int a = 1;
+    int b = N;
+    set<int> s;
+
+    for (int m = 1; m <= M; m++) {
+        if ((s.find(abs(a - b)) != s.end()) || (s.find(abs(N + a - b) % N) != s.end()) || abs(a - b) == abs((N + a - b) % N)) {
+            cout << a << " " << b - 1 << endl;
+        } else {
+            cout << a << " " << b << endl;
+        }
+        s.insert(abs(a - b));
+        s.insert(abs((N + a - b)%N));
+        a++;
+        b--;
     }
 
     return 0;
