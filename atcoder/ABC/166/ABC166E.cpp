@@ -18,9 +18,27 @@ const int mod = 1000000007;
 template<class T> inline bool chmax(T &a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T &a, T b) { if (a > b) { a = b; return true; } return false; }
 
+ll N;
+vector<ll> A;
+map<ll, int> cnt;
+
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(false);
     
+    cin >> N;
+    A.resize(N + 1);
+    REP(i,N) cin >> A.at(i);
+
+    ll ans = 0;
+
+    REP(i, N) {
+        ans += cnt[i - A.at(i)];
+        cnt[i + A.at(i)]++;
+    
+    }
+
+    cout << ans << endl;
+
     return 0;
 }
