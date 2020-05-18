@@ -1,5 +1,5 @@
 {
-	// Place your snippets for c here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// Place your snippets for cpp here. Each snippet is defined under a snippet name and has a prefix, body and 
 	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
 	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
 	// same ids are connected.
@@ -15,17 +15,64 @@
 	"cpp": {
 		"prefix": "cpp",
 		"body": [
-			"#include <bits/stdc++.h>",
+			"#include <cassert>",
+			"#include <cctype>",
+			"#include <cfloat>",
+			"#include <climits>",
+			"#include <cmath>",
+			"#include <csignal>",
+			"#include <cstddef>",
+			"#include <cstdio>",
+			"#include <cstdlib>",
+			"#include <ctime>",
+			"#include <cinttypes>",
+			"#include <cstdint>",
+			"",
+			"#include <algorithm>",
+			"#include <bitset>",
+			"#include <complex>",
+			"#include <deque>",
+			"#include <exception>",
+			"#include <fstream>",
+			"#include <functional>",
+			"#include <iomanip>",
+			"#include <iostream>",
+			"#include <iterator>",
+			"#include <limits>",
+			"#include <list>",
+			"#include <map>",
+			"#include <numeric>",
+			"#include <queue>",
+			"#include <set>",
+			"#include <stack>",
+			"#include <string>",
+			"#include <typeinfo>",
+			"#include <utility>",
+			"#include <valarray>",
+			"#include <vector>",
+			"#include <array>",
+			"#include <chrono>",
+			"#include <forward_list>",
+			"#include <initializer_list>",
+			"#include <random>",
+			"#include <regex>",
+			"#include <tuple>",
+			"#include <type_traits>",
+			"#include <unordered_map>",
+			"#include <unordered_set>",
 			"",
 			"using namespace std;",
 			"using ll = long long;",
 			"",
-			"using Field = vector<vector<int>>;",
-			"using Graph = vector<vector<int>>;",
+			"using Field = vector<vector<ll>>;",
+			"using Graph = vector<vector<ll>>;",
 			"using VI = vector<int>;",
+			"using VL = vector<ll>;",
+			"using VVL = vector<vector<ll>>;",
 			"using VC = vector<char>;",
 			"using PI = pair<int, int>;",
 			"",
+			"#define FOR(i, s, n) for (int i = s; i < (n); i++)",
 			"#define REP(i, n) for (int i = 0; i < (n); i++)",
 			"#define ALL(x) x.begin(), x.end()",
 			"",
@@ -35,13 +82,15 @@
 			"template<class T> inline bool chmax(T &a, T b) { if (a < b) { a = b; return true; } return false; }",
 			"template<class T> inline bool chmin(T &a, T b) { if (a > b) { a = b; return true; } return false; }",			
 			"",
+			"$1",
+			"",
 			"int main() {",
 			"    cin.tie(0);",
 			"    ios_base::sync_with_stdio(false);",
-			"    $1",
+			"    ",
 			"    return 0;",
 			"}"
-		],
+		]
 	},
 	"comb": {
 		"prefix": "comb",
@@ -69,7 +118,7 @@
 			"",
 			"ll HCOM(int n, int k) {",
 			"    return (n == 0 && k == 0) ? 1 : COM(n+k-1, k);",
-			"}",
+			"}"
 		]
 	},
 	"modpow": {
@@ -88,14 +137,14 @@
 			"      n >>= 1;",
 			"   }",
 			"   return res;",
-			"}",
+			"}"
 		]
 	},
 	"segtree": {
 		"prefix": "segtree",
 		"body": [
 			"template <typename T>",
-		    "struct SegTree {",
+			"struct SegTree {",
 			"   const T INF = numeric_limits<T>::max();",
 			"   int n;",
 			"   vector<T> dat;",
@@ -106,7 +155,7 @@
 			"      }",
 			"      n = x;",
 			"   }",
-		    "",
+			"",
 			"   void update(int i, T x) {",
 			"      i += n - 1;",
 			"      dat.at(i) = x;",
@@ -126,7 +175,7 @@
 			"         return max(vl, vr);",
 			"      }",
 			"   }",
-			"};",
+			"};"
 		]
 	},
 	"matrix": {
@@ -157,7 +206,7 @@
 			"       k >>= 1;",
 			"   }",
 			"   return res;",
-			"}",
+			"}"
 		]
 	}
 }

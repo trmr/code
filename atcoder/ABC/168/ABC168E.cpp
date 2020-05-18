@@ -65,49 +65,64 @@ const int mod = 1000000007;
 template<class T> inline bool chmax(T &a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T &a, T b) { if (a > b) { a = b; return true; } return false; }
 
-string K;
-int D;
-vector<vector<vector<ll>>> dp;
+ll modpow(ll a, ll n) {
+   ll res = 1;
+   while (n > 0) {
+      if (n & 1) {
+         res *= a;
+         res %= mod;
+      }
+      a *= a;
+      a %= mod;
+
+      n >>= 1;
+   }
+   return res;
+}
+
+ll N;
+vector<ll> A, B;
+
+vector<double> C;
+map<double, ll> D;
+
 
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(false);
-    cin >> K >> D;
 
-    int N = K.length();
+    cin >> N;
+    A.resize(N + 1);
+    B.resize(N + 1);
 
-    dp.assign(N + 1, vector<vector<ll>>(2, vector<ll>(D + 1)));
-    dp[0][0][0] = 1;
-
-    for (int i = 0; i < N; i++) {
-        for (int smaller = 0; smaller < 2; smaller++) {
-            for (int d = 0; d < D; d++) {
-                int c = K[i] - '0';
-                for (int next = 0; next < 10; next++) {
-
-                    if (smaller) {
-                        dp[i + 1][smaller][(d + next) % D] += dp[i][smaller][d];
-                        dp[i + 1][smaller][(d + next) % D] %= mod;
-                    }
-
-                    if (!smaller) {
-                        if (next == c) {
-                            dp[i + 1][0][(d + next) % D] += dp[i][smaller][d];
-                            dp[i + 1][0][(d + next) % D] %= mod;
-                        } else if (next < c) {
-                            dp[i + 1][1][(d + next) % D] += dp[i][smaller][d];
-                            dp[i + 1][1][(d + next) % D] %= mod;
-                        }
-
-                    }
-
-                }
-            }
-        }
+    REP(i, N) {
+        cin >> A[i] >> B[i];
     }
 
-    cout << (dp[N][0][0] + dp[N][1][0] - 1 + mod) % mod << endl;
+    C.resize(N + 1);
 
-    
+    REP(i, N) {
+        C[i] = (double)A[i] / B[i];
+        D[(double)B[i] / A[i] * (-1)] += 1;
+    }
+
+    ll ng = 0;
+
+    REP(i, N) {
+        ng += D[C[i]]; 
+        ng %= mod;
+    }
+
+    ng /= 2;
+
+    ll ans = modpow(2, N) - 1;
+
+    REP(i, ng) {
+        ans = (ans + mod - modpow(2, N - 2)) % mod;
+    } 
+
+
+    cout << ans << endl;
+
     return 0;
 }

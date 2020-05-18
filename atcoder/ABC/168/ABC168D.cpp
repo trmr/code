@@ -65,49 +65,61 @@ const int mod = 1000000007;
 template<class T> inline bool chmax(T &a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T &a, T b) { if (a > b) { a = b; return true; } return false; }
 
-string K;
-int D;
-vector<vector<vector<ll>>> dp;
+ll N , M;
+Graph G;
 
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(false);
-    cin >> K >> D;
 
-    int N = K.length();
+    cin >> N >> M;
+    G.assign(N + 1, vector<ll>());
 
-    dp.assign(N + 1, vector<vector<ll>>(2, vector<ll>(D + 1)));
-    dp[0][0][0] = 1;
+    REP(i, M) {
+        ll a, b;
+        cin >> a >> b;
+        a--; b--;
+        G[a].push_back(b);
+        G[b].push_back(a);
+    }
 
-    for (int i = 0; i < N; i++) {
-        for (int smaller = 0; smaller < 2; smaller++) {
-            for (int d = 0; d < D; d++) {
-                int c = K[i] - '0';
-                for (int next = 0; next < 10; next++) {
+    queue<pair<ll, ll>> que;
 
-                    if (smaller) {
-                        dp[i + 1][smaller][(d + next) % D] += dp[i][smaller][d];
-                        dp[i + 1][smaller][(d + next) % D] %= mod;
-                    }
+    vector<ll> ans(N + 1, -1);
 
-                    if (!smaller) {
-                        if (next == c) {
-                            dp[i + 1][0][(d + next) % D] += dp[i][smaller][d];
-                            dp[i + 1][0][(d + next) % D] %= mod;
-                        } else if (next < c) {
-                            dp[i + 1][1][(d + next) % D] += dp[i][smaller][d];
-                            dp[i + 1][1][(d + next) % D] %= mod;
-                        }
+    que.push(make_pair(0, -1));
 
-                    }
-
-                }
-            }
+    while (!que.empty()) {
+        pair<ll, ll> p = que.front();
+        que.pop();
+        ll cur = p.first;
+        ll par = p.second;
+        if (ans[cur] != -1) continue;
+        ans[cur] = par;
+        for (int i = 0; i < G[cur].size(); i++) {
+            ll next = G[cur][i];
+            pair<ll, ll> nextp = make_pair(next, cur);
+            que.push(nextp);
         }
     }
 
-    cout << (dp[N][0][0] + dp[N][1][0] - 1 + mod) % mod << endl;
+    bool flag = true;
 
+    for (int i = 1; i < N; i++) {
+        if (ans[i] == -1) {
+            flag = false;
+            break;
+        }
+    }
+
+    if (flag) {
+        cout << "Yes" << endl;
+        for (int i = 1; i < N; i++) {
+            cout << ans[i] + 1 << endl;
+        }
+    }else {
+        cout << "No" << endl;
+    }
     
     return 0;
 }
