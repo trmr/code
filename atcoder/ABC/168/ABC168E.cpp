@@ -83,8 +83,16 @@ ll modpow(ll a, ll n) {
 ll N;
 vector<ll> A, B;
 
-vector<double> C;
-map<double, ll> D;
+map<pair<ll, ll>, ll> M;
+ll zero_zero, zero_no, no_zero;
+
+pair<ll, ll> rev(pair<ll, ll> x) {
+    ll a = -x.first;
+    ll b = x.second;
+
+    if (a < 0) return make_pair(-b, -a);
+    return make_pair(b, a);
+}
 
 
 int main() {
@@ -99,28 +107,45 @@ int main() {
         cin >> A[i] >> B[i];
     }
 
-    C.resize(N + 1);
+    zero_zero = 0, no_zero = 0, zero_no = 0;
+
 
     REP(i, N) {
-        C[i] = (double)A[i] / B[i];
-        D[(double)B[i] / A[i] * (-1)] += 1;
+        if (A[i] == 0 && B[i] == 0) zero_zero++;
+        else if (A[i] == 0) zero_no++;
+        else if (B[i] == 0) no_zero++;
+        else {
+            ll g = gcd(abs(A[i]), abs(B[i]));
+            A[i] /= g;
+            B[i] /= g;
+            if (B[i] < 0) {
+                A[i] *= -1;
+                B[i] *= -1;
+            }
+            M[make_pair(A[i], B[i])]++;
+        }
     }
 
-    ll ng = 0;
+    ll ans = modpow(2, zero_no) + modpow(2, no_zero) + mod - 1;
+    ans %= mod;
 
-    REP(i, N) {
-        ng += D[C[i]]; 
-        ng %= mod;
-    }
-
-    ng /= 2;
-
-    ll ans = modpow(2, N) - 1;
-
-    REP(i, ng) {
-        ans = (ans + mod - modpow(2, N - 2)) % mod;
+    set<pair<ll, ll>> used;
+    for (auto m : M) if (!used.count(m.first)) {
+        auto p = m.first;
+        auto pp = rev(p);
+        if (M.count(pp)) {
+            ans *= modpow(2, M[p]) + modpow(2, M[pp]) +mod - 1;
+            ans %= mod;
+            used.insert(pp);
+        } else {
+            ans *= modpow(2, M[p]);
+            ans %= mod;
+        }
     } 
 
+    ans += zero_zero;
+    ans = ans + mod - 1;
+    ans %= mod;
 
     cout << ans << endl;
 
