@@ -20,38 +20,44 @@ const int mod = 1000000007;
 template<class T> inline bool chmax(T &a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T &a, T b) { if (a > b) { a = b; return true; } return false; }
 
-vector<vector<ll>> dp(110, vector<ll>(10100));
-vector<ll> p;
-int N;
+int W;
+int N, K;
+vector<int> A, B;
+
+vector<vector<vector<int>>> dp(51, vector<vector<int>>(51, vector<int>(10010)));
 
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(false);
 
-    cin >> N;
-    p.resize(N);
+    cin >> W;
+    cin >> N >> K;
+    A.resize(N);
+    B.resize(N);
 
-    REP(i, N) cin >> p[i];
+    REP(i, N) {
+        cin >> A[i] >> B[i];
+    }
 
-    dp[0][0] = 1;
+    for (int i = 0; i <= N; i++) {
+        dp[0][i][0] = 0;
+    }
 
     for (int i = 0; i < N; i++) {
-        for (int j = 0; j <= 10000; j++) {
-            if (j >= p[i]) {
-                dp[i + 1][j] = dp[i][j] + dp[i][j - p[i]];
-            } else {
-                dp[i + 1][j] = dp[i][j];
+        for (int j = 0; j < K; j++) {
+            for (int k = 0; k <= W; k++) {
+                if (k >= A[i]) {
+                    dp[i + 1][j + 1][k] = max(dp[i][j][k], dp[i][j][k - A[i]] + B[i]);
+                    dp[i + 1][j + 1][k] = max(dp[i + 1][j + 1][k], dp[i][j + 1][k]);
+                } else {
+                    dp[i + 1][j + 1][k] = max(dp[i][j][k], dp[i][j + 1][k]);
+                }
             }
         }
     }
 
-    ll ans = 0;
+    cout << dp[N][K][W] << endl;
 
-    for (int i = 0; i <= 10000; i++) {
-        if (dp[N][i] != 0) ans++;
-    }
-
-    cout << ans << endl;
 
     return 0;
 }

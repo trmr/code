@@ -20,38 +20,57 @@ const int mod = 1000000007;
 template<class T> inline bool chmax(T &a, T b) { if (a < b) { a = b; return true; } return false; }
 template<class T> inline bool chmin(T &a, T b) { if (a > b) { a = b; return true; } return false; }
 
-vector<vector<ll>> dp(110, vector<ll>(10100));
-vector<ll> p;
-int N;
+int D, N;
+vector<int> T;
+vector<int> A, B, C;
+
+vector<vector<int>> dp(210, vector<int>(110, -1));
 
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(false);
 
-    cin >> N;
-    p.resize(N);
+    cin >> D >> N;
+    T.resize(D);
+    for (int i = 0; i < D; i++) {
+        cin >> T[i];
+    }
+    A.resize(N);
+    B.resize(N);
+    C.resize(N);
 
-    REP(i, N) cin >> p[i];
-
-    dp[0][0] = 1;
+    REP(i, N) {
+        cin >> A[i] >> B[i] >> C[i];
+    }
 
     for (int i = 0; i < N; i++) {
-        for (int j = 0; j <= 10000; j++) {
-            if (j >= p[i]) {
-                dp[i + 1][j] = dp[i][j] + dp[i][j - p[i]];
-            } else {
-                dp[i + 1][j] = dp[i][j];
+        if (A[i] <= T[0] && T[0] <= B[i]) {
+            chmax(dp[0][C[i]], 0);
+        }
+    }
+
+    for (int i = 1; i < D; i++) {
+        for (int j = 0; j < N; j++) {
+            if (A[j] <= T[i] && T[i] <= B[j]) {
+                for (int c : C) {
+                    if (dp[i-1][c] != -1) {
+                        chmax(dp[i][C[j]], dp[i-1][c] + abs(C[j] - c));
+                    }
+                }
             }
         }
     }
 
-    ll ans = 0;
-
-    for (int i = 0; i <= 10000; i++) {
-        if (dp[N][i] != 0) ans++;
+    int ans = 0;
+    for (int i = 0; i < 101; i++) {
+        chmax(ans, dp[D - 1][i]);
     }
 
     cout << ans << endl;
+
+
+
+
 
     return 0;
 }
