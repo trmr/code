@@ -68,7 +68,7 @@ int main() {
 
     for (int i = 0; i < A.size(); i++) {
         if (W - A[i].first >= 0) {
-            auto b_v = (lower_bound(B.begin(), B.end(), make_pair(W-A[i].first, 1ll << 55)) - 1) ->second;
+            auto b_v = (upper_bound(B.begin(), B.end(), make_pair(W-A[i].first, 1ll << 55)) - 1) ->second;
             chmax(max_v, A[i].second + b_v);
         }
 
