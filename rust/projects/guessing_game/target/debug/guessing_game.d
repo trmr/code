@@ -1,1 +1,1 @@
-/home/trmr/codes/rust/projects/guessing_game/target/debug/guessing_game: /home/trmr/codes/rust/projects/guessing_game/src/main.rs
+/Users/teramura/code/rust/projects/guessing_game/target/debug/guessing_game: /Users/teramura/code/rust/projects/guessing_game/src/main.rs

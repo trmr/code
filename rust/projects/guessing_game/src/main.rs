@@ -1,5 +1,3 @@
-extern crate rand;
-
 use std::io;
 use rand::Rng;
 use std::cmp::Ordering;
@@ -21,7 +19,7 @@ fn main() {
             Ok(num) => num,
             Err(_) => continue,
         };
-
+        
         println!("you guessed: {}", guess);
 
         match guess.cmp(&secret_number) {
